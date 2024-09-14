@@ -1273,8 +1273,14 @@ function handlers(element2) {
 }
 
 // build/dev/javascript/lustre/lustre/attribute.mjs
+function attribute(name, value) {
+  return new Attribute(name, identity(value), false);
+}
 function on(name, handler) {
   return new Event("on" + name, handler);
+}
+function class$(name) {
+  return attribute("class", name);
 }
 
 // build/dev/javascript/lustre/lustre/element.mjs
@@ -2003,6 +2009,12 @@ function start2(app, selector, flags) {
 }
 
 // build/dev/javascript/lustre/lustre/element/html.mjs
+function body(attrs, children2) {
+  return element("body", attrs, children2);
+}
+function h1(attrs, children2) {
+  return element("h1", attrs, children2);
+}
 function div(attrs, children2) {
   return element("div", attrs, children2);
 }
@@ -2037,17 +2049,36 @@ function update(model, msg) {
 }
 function view(model) {
   let counter = to_string2(model);
-  return div(
-    toList([]),
+  return body(
     toList([
-      button(
-        toList([on_click(new Increment())]),
-        toList([text("+")])
-      ),
-      text(counter),
-      button(
-        toList([on_click(new Decrement())]),
-        toList([text("-")])
+      class$(
+        "frappe grid place-items-center w-screen h-screen bg-base text-white"
+      )
+    ]),
+    toList([
+      div(
+        toList([class$("flex flex-col items-center gap-4 text-4xl")]),
+        toList([
+          button(
+            toList([
+              on_click(new Increment()),
+              class$(
+                "px-3 py-1 bg-white shadow-lg hover:bg-emerald-300 duration-150 rounded-md text-black"
+              )
+            ]),
+            toList([text("+")])
+          ),
+          h1(toList([class$("text-black")]), toList([text(counter)])),
+          button(
+            toList([
+              on_click(new Decrement()),
+              class$(
+                "px-3 py-1 bg-white shadow-lg hover:bg-emerald-300 duration-150 rounded-md text-black"
+              )
+            ]),
+            toList([text("-")])
+          )
+        ])
       )
     ])
   );

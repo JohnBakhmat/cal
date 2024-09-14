@@ -1,9 +1,9 @@
 import gleam/int
-import gleam/io
 import lustre
-import lustre/element
-import lustre/element/html
-import lustre/event
+import lustre/attribute.{class}
+import lustre/element.{text}
+import lustre/element/html.{body, button, div, h1}
+import lustre/event.{on_click}
 
 pub fn main() {
   let app = lustre.simple(init, update, view)
@@ -34,9 +34,34 @@ fn update(model: Model, msg: Msg) -> Model {
 fn view(model: Model) -> element.Element(Msg) {
   let counter = int.to_string(model)
 
-  html.div([], [
-    html.button([event.on_click(Increment)], [element.text("+")]),
-    element.text(counter),
-    html.button([event.on_click(Decrement)], [element.text("-")]),
-  ])
+  body(
+    [
+      class(
+        "frappe grid place-items-center w-screen h-screen bg-base text-white",
+      ),
+    ],
+    [
+      div([class("flex flex-col items-center gap-4 text-4xl")], [
+        button(
+          [
+            on_click(Increment),
+            class(
+              "px-3 py-1 bg-white shadow-lg hover:bg-emerald-300 duration-150 rounded-md text-black",
+            ),
+          ],
+          [text("+")],
+        ),
+        h1([class("text-black")], [text(counter)]),
+        button(
+          [
+            on_click(Decrement),
+            class(
+              "px-3 py-1 bg-white shadow-lg hover:bg-emerald-300 duration-150 rounded-md text-black",
+            ),
+          ],
+          [text("-")],
+        ),
+      ]),
+    ],
+  )
 }
